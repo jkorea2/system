@@ -33,3 +33,5 @@ while True:
 	html = urllib2.urlopen("https://api.thingspeak.com/update?api_key=QODJW5RBNIHGRGUH&field1=" + str(temp_c))
 	print(read_temp())
 	time.sleep(10)
+
+#test

@@ -31,7 +31,9 @@ def read_temp():
 while True:
 	temp_c, temp_f = read_temp()
 	html = urllib2.urlopen("https://api.thingspeak.com/update?api_key=QODJW5RBNIHGRGUH&field1=" + str(temp_c))
+	url = urllib2.urlopen("http://localhost:3000/insert?value="+str(temp_c))
 	print(read_temp())
-	time.sleep(10)
+	print 'data send thingspeak and nodejs server!'
+	time.sleep(10.0)
 
 #test

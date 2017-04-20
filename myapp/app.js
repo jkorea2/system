@@ -36,6 +36,40 @@ app.get('/update', function(req, res) {
 	res.send('Hello World!');
 });
 
+app.get('/graph', function (req, res) {
+	console.log('got app.get(graph)');
+	var html = fs.readFile('/home/pi/Desktop/myapp/mission6.html', function (err, html) {
+		html = " " + html
+		console.log('read file');
+
+		var qstr = 'select * from sensors';
+		connection.query(qstr, function(err, rows, cols) {
+
+			if(err) throw err;
+
+			var data = "data.addRows([";
+			var comma = "";
+			var date = new Date;
+
+			for(var i = 0; i < rows.length; i++) {
+				r = rows[i];
+				data += comma + "[new Date(" + r.time.getFullYear() +"," +r.time.getMonth() +","+ r.time.getDate()+"," + r.time.getHours() +"," +r.time.getMinutes() + "," + r.time.getSeconds() + ")"  + ","+ r.value +"]";
+				comma = ",";
+			}
+
+			data += "]);";
+			var header = "data.addColumn('date', 'Date/Time');"
+			header += "data.addColumn('number', 'Temp');"
+			html = html.replace("<%HEADER%>", header);
+			html = html.replace("<%DATA%>", data);
+
+			res.writeHeader(200, {"Content-Type": "text/html"});
+			res.write(html);
+			res.end();
+		});
+	});
+})
+
 app.listen(3000, function() {
 	console.log('example app listening on port 3000');
 });
